@@ -1,0 +1,45 @@
+﻿@model StudDetailsWithCoursesViewModel
+
+@* <div class="card" style="width: 18rem;"> *@
+@*     <div class="card-body"> *@
+@*         <h5 class="card-title">@Model.Name</h5> *@
+@*         <h6 class="card-subtitle mb-2 text-muted">@Model.Image</h6> *@
+@*         <p class="card-text" style="color:@Model.degreeColor">@Model.Age</p> *@
+@*         <p class="card-text">@Model.Address</p> *@
+@*         <a href="/student/index" class="card-link">Back to All Students</a> *@
+@*         @foreach(Courses_Studs courses_Studs in Model.Courses_Studs){ *@
+@*             <p>@courses_Studs.Courses.Name</p> *@
+@*             <p>@courses_Studs.degree</p> *@
+@*             <p>@courses_Studs.Courses.minDigree</p> *@
+
+@*         } *@
+@*     </div> *@
+@* </div> *@
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;width:50%">
+    <div class="card shadow" style="width: 100%;">
+        <img src="/Images/@Model.Image" class="card-img-top" style="width:300px;margin:2px auto" alt="Instructor Photo">
+        <div class="card-body text-center">
+            <h1 class="card-title">@Model.Name</h1>
+            <h4 class="card-text">@Model.Age</h4>
+            <h6 class="card-text">@Model.Address</h6>
+            
+            <hr> 
+            <h6 class="card-subtitle mb-2">Courses Grades:</h6>
+            <ul class="list-unstyled m-3">
+            @foreach(CourseViewModel course in Model.Courses){
+                    string backgroundColor = course.Degree >= course.minDegree ? "#198754" : "#dc3545";
+                <li class="mb-3">
+                    <button class="btn w-100 text-white py-3" style="background-color: @backgroundColor;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0">@course.Name</span>
+                            <span class="badge bg-light text-dark">@course.Degree</span>
+                        </div>
+                    </button>
+                </li>
+            }
+            </ul>
+            <a href="/student/index" class="btn btn-primary w-50">Back to All Students</a>
+        </div>
+    </div>
+</div>

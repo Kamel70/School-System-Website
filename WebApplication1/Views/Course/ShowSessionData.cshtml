@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewData["Title"] = "ShowSessionData";
+    string? userName = Context.Session.GetString("UserName");
+    int? Age = Context.Session.GetInt32("Age");
+}
+
+<h2>User Name: @userName</h2>
+<h4>Age: @Age</h4>
+

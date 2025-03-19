@@ -1,0 +1,36 @@
+﻿
+<div class="m-5">
+    <span>You Want to Add New Student? </span>
+    <a asp-action="Add" class="btn btn-outline-primary">Add</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
+            <th scope="col">Age</th>
+            <th scope="col">Address</th>
+            <th scope="col">Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Student student in Model)
+        {
+            <tr>
+                <th scope="row">@student.Id</th>
+                <td>@student.Name</td>
+                @* <td>@student.Image</td> *@
+                <td><img src="/Images/@student.Image" style="width:70px"/></td>
+                <td>@student.Age</td>
+                <td>@student.Address</td>
+                <td>
+                    <a class="btn btn-primary" href="/student/details/@student.Id">Details</a>
+                    <a class="btn btn-danger" onclick="openDeleteModal(@student.Id)">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

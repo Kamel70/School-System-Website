@@ -1,0 +1,75 @@
+﻿@model InstructorWithDepartmentsAndCourses
+@{
+    SelectList departments = new SelectList(Model.Departments, "Id", "Name");
+    SelectList courses = new SelectList(Model.courses, "Id", "Name");
+}
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <div class="form-container">
+        <h2 class="form-title">Add New Instructor</h2>
+        <form method="post" asp-action="@(ViewBag.Edit?"SaveEdit":"SaveAdd")">
+            @if (ViewBag.Edit){
+                <input asp-for="Id" hidden/>
+            }
+            <div class="mb-3">
+                <label asp-for="FName" class="form-label"></label>
+                <input class="form-control" asp-for="FName">
+                <span asp-validation-for="FName" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="LName" class="form-label"></label>
+                <input class="form-control" asp-for="LName">
+                <span asp-validation-for="LName" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Salary" class="form-label"></label>
+                <input class="form-control" asp-for="Salary">
+                <span asp-validation-for="Salary" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Age" class="form-label"></label>
+                <input class="form-control" asp-for="Age">
+                <span asp-validation-for="Age" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Image" class="form-label"></label>
+                <input class="form-control" asp-for="Image">
+                <span asp-validation-for="Image" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="HiringDate" class="form-label"></label>
+                <input class="form-control" asp-for="HiringDate">
+                <span asp-validation-for="HiringDate" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DeptID" class="form-label"></label>
+                <select class="form-select" asp-for="DeptID" asp-items="departments">
+                </select>
+                <span asp-validation-for="DeptID" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CourseId" class="form-label"></label>
+                <select class="form-select" asp-for="CourseId" asp-items="courses">
+                </select>
+                <span asp-validation-for="CourseId" style="color:red"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <input type="submit" class="btn btn-primary w-50" value="@(ViewBag.Edit?"Edit":"Add")">
+            </div>
+
+        </form>
+    </div>
+</div>

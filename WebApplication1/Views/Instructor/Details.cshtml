@@ -1,0 +1,24 @@
+﻿@model InstructorDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;width:50%">
+    <div class="card shadow" style="width: 100%;">      
+        <img src="/Images/@Model.Image" class="card-img-top" style="width:300px;margin:2px auto" alt="Instructor Photo">
+        <div class="card-body text-center">
+            <h5 class="card-title">@Model.FullName</h5>
+            <p class="card-text"><small class="text-muted">Joined: @Model.HiringDate</small></p>
+            <hr>
+            <h6 class="card-subtitle mb-2">Courses Taught:</h6>
+            <ul class="list-unstyled">
+                @foreach(Courses courses in Model.Courses){
+                    <li class="mb-2">
+                        <button class="btn btn-primary w-50">@courses.Name</button>
+                    </li>
+                } 
+            </ul>
+        </div>
+    </div>
+</div>
+

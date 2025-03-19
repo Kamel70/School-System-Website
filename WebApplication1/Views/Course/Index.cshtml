@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="m-5">
+    <span>You Want to Add New Course? </span>
+    <a asp-action="Add" class="btn btn-outline-primary">Add</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Min Degree</th>
+            <th scope="col">Topic</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Courses courses in Model)
+        {
+            <tr>
+                <th scope="row">@courses.Id</th>
+                <td>@courses.Name</td>
+                <td>@courses.minDigree</td>
+                <td>@courses.Topic</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+

@@ -1,0 +1,86 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using WebApplication1.Context;
+using WebApplication1.Models;
+using WebApplication1.Repository;
+using WebApplication1.ViewModels;
+
+namespace WebApplication1.Controllers
+{
+    [Authorize]
+    public class CourseController : Controller
+    {
+        ICoursesRepository CoursesRepository;
+        IInstructorRepository InstructorRepository;
+        public CourseController(ICoursesRepository coursesRepository, IInstructorRepository instructorRepository)
+        {
+            CoursesRepository = coursesRepository;
+            InstructorRepository = instructorRepository;
+        }
+        public IActionResult Index()
+        {
+            var courses=CoursesRepository.GetAll();
+            return View(courses);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var course= CoursesRepository.GetByIDIncludesInstructors(id);
+            return View(course);
+        }
+
+        public IActionResult ShowSessionData()
+        {
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            CourseWithInstructorsViewModel viewModel = new CourseWithInstructorsViewModel();
+            viewModel.instructors = InstructorRepository.GetAll();
+            return View(viewModel);
+        }
+        [HttpPost]
+        public IActionResult SaveAdd(CourseWithInstructorsViewModel course)
+        {
+            if (ModelState.IsValid)
+            {
+                Courses newCourse = new Courses();
+                newCourse.Name = course.Name;
+                newCourse.Topic = course.Topic;
+                newCourse.minDigree=course.minDigree;
+                newCourse.TotalDigree = course.TotalDigree;
+                newCourse.InsID = course.InsID;
+                CoursesRepository.Add(newCourse);
+                CoursesRepository.Save();
+                return RedirectToAction("Index");
+            }
+            course.instructors = InstructorRepository.GetAll();
+            return View("Add", course);
+
+        }
+        public IActionResult uniqueName(string Name) {
+            Courses course = CoursesRepository.GetByName(Name);
+            if (course == null) 
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
+
+        public IActionResult CheckTotalDegree(int TotalDigree, int minDigree) 
+        {
+            if (TotalDigree > minDigree)
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
+    }
+
+    
+}

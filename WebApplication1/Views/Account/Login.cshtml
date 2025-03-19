@@ -1,0 +1,41 @@
+﻿@model Account
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <div class="form-container">
+        <h2 class="form-title">Login</h2>
+        <form method="post" asp-action="Login" asp-controller="Account">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input class="form-control" asp-for="Name">
+                <span asp-validation-for="Name" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input class="form-control" asp-for="Password">
+                <span asp-validation-for="Password" style="color:red"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <input type="submit" class="btn btn-primary w-50" value="Login">
+            </div>
+
+        </form>
+    </div>
+</div>
+

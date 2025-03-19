@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="m-5">
+    <span>You Want to Add New Department? </span>
+    <a asp-action="Add" class="btn btn-outline-primary">Add</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Location</th>
+            <th scope="col"></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Department dept in Model)
+        {
+            <tr>
+                <th scope="row">@dept.Id</th>
+                <td>@dept.Name</td>
+                <td>@dept.Description</td>
+                <td>@dept.Location</td>
+                <td><a href="/instructor/details/@dept.Id" class="btn btn-primary">Details</a></td>
+                <td><a href="/instructor/Edit/@dept.Id" class="btn btn-outline-primary">Edit</a></td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
