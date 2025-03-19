@@ -53,8 +53,13 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-function openDeleteModal(studentId) {
-    var deleteUrl = '/Student/Delete/' + studentId;
+function openDeleteModalForStudents(Id) {
+    var deleteUrl = '/Student/Delete/' + Id;
+    document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
+    $('#deleteModal').modal('show'); // Show the modal
+}
+function openDeleteModalForDepartments(Id) {
+    var deleteUrl = '/Department/Delete/' + Id;
     document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
     $('#deleteModal').modal('show'); // Show the modal
 }

@@ -60,12 +60,12 @@ namespace WebApplication1.Controllers
             return View(department);
         }
 
-        //public IActionResult Delete(int id)
-        //{
-        //    departmentRepository.delete(id);
-        //    departmentRepository.Save();
-        //    return RedirectToAction("Index");
-        //}
+        public IActionResult Delete(int id)
+        {
+            departmentRepository.delete(id);
+            departmentRepository.Save();
+            return RedirectToAction("Index");
+        }
 
 
     }
