@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
@@ -38,5 +39,26 @@ namespace WebApplication1.Controllers
                 
             return View("Add",dept);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var department = departmentRepository.GetByID(id);
+            return View(department);
+        }
+        [HttpPost]
+        public IActionResult Edit(Department dept)
+        {
+            if (ModelState.IsValid)
+            {
+                departmentRepository.Update(dept);
+                departmentRepository.Save();
+                return RedirectToAction("Index");
+            }
+
+            return View("Edit", dept);
+        }
+
+
     }
 }
