@@ -6,8 +6,8 @@ namespace WebApplication1.Controllers
 {
     public class DepartmentController : Controller
     {
-        public DepartmentRepository departmentRepository;
-        public DepartmentController(DepartmentRepository _departmentRepository)
+        public IDepartmentRepository departmentRepository;
+        public DepartmentController(IDepartmentRepository _departmentRepository)
         {
             departmentRepository = _departmentRepository;
         }
@@ -26,9 +26,17 @@ namespace WebApplication1.Controllers
         { 
             return View();
         }
+        [HttpPost]
         public IActionResult Add(Department dept)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                departmentRepository.Add(dept);
+                departmentRepository.Save();
+                return RedirectToAction("Index");
+            }
+                
+            return View("Add",dept);
         }
     }
 }
