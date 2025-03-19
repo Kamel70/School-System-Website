@@ -1,0 +1,26 @@
+﻿@model Department
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;width:50%">
+    <div class="card shadow" style="width: 100%;">
+        <img src="/Images/department.png" class="card-img-top" style="width:300px;margin:2px auto" alt="Department Photo">
+        <div class="card-body text-center">
+            <h3 class="card-title">@Model.Name</h3>
+			<h6 class="card-subtitle mb-2">@Model.Description</h6>
+            <p class="card-text"><small class="text-muted">Location: @Model.Location</small></p>
+            <hr>
+            <h6 class="card-subtitle mb-2">Instructors:</h6>
+            <ul class="list-unstyled">
+                @foreach (Instructor ins in Model.Instructors)
+                {
+                    <li class="mb-2">
+                        <button class="btn btn-primary w-50">@ins.FName @ins.LName</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+

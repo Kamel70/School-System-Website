@@ -18,10 +18,6 @@ namespace WebApplication1.Controllers
             var department=departmentRepository.GetAll();
             return View(department);
         }
-
-        public IActionResult Details() { 
-            return View();
-        }
         [HttpGet]
         public IActionResult Add() 
         { 
@@ -58,6 +54,18 @@ namespace WebApplication1.Controllers
 
             return View("Edit", dept);
         }
+        public IActionResult Details(int id)
+        {
+            var department = departmentRepository.GetByIDIncludesInstructors(id);
+            return View(department);
+        }
+
+        //public IActionResult Delete(int id)
+        //{
+        //    departmentRepository.delete(id);
+        //    departmentRepository.Save();
+        //    return RedirectToAction("Index");
+        //}
 
 
     }
