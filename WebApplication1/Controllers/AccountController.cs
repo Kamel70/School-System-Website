@@ -22,11 +22,20 @@ namespace WebApplication1.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(Account account)
+        public async Task<IActionResult> Login(Account account)
         {
             if(ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Instructor");
+                ApplicationUser user = await userManager.FindByEmailAsync(account.Email);
+                if(user != null)
+                {
+                    bool result = await userManager.CheckPasswordAsync(user, account.Password);
+                    if (result)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                    ModelState.AddModelError("", "Invalid Email Or Password");
             }
             return Content("Invalid User");
         }
