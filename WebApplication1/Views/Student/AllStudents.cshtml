@@ -26,11 +26,11 @@
                 <td>@student.Age</td>
                 <td>@student.Address</td>
                 <td>
+                    <a class="btn btn-outline-primary" href="/student/Edit/@student.Id">Edit</a>
                     <a class="btn btn-primary" href="/student/details/@student.Id">Details</a>
                     <a class="btn btn-danger" onclick="openDeleteModalForStudents(@student.Id)">Delete</a>
                 </td>
             </tr>
         }
-
     </tbody>
 </table>

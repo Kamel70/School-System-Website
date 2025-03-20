@@ -8,7 +8,7 @@ using WebApplication1.ViewModels;
 namespace WebApplication1.Controllers
 {
     public class StudentController : Controller
-    {   
+    {
         IDepartmentRepository departmentRepository;
         IStudentRepository studentRepository;
 
@@ -19,9 +19,9 @@ namespace WebApplication1.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.Departments=departmentRepository.GetAll();
-            var students=studentRepository.GetAll();
-            HttpContext.Session.SetString("UserName","Kamel");
+            ViewBag.Departments = departmentRepository.GetAll();
+            var students = studentRepository.GetAll();
+            HttpContext.Session.SetString("UserName", "Kamel");
             HttpContext.Session.SetInt32("Age", 24);
             return View(students);
         }
@@ -35,19 +35,19 @@ namespace WebApplication1.Controllers
             return PartialView("AllStudents", students);
         }
 
-        public IActionResult Details(int id) 
-        { 
-            var student=studentRepository.GetByIdIncludesCoursesAndCoursesStuds(id);
-            List<CourseViewModel> list=student.Courses_Studs.Select(sc=>new CourseViewModel
+        public IActionResult Details(int id)
+        {
+            var student = studentRepository.GetByIdIncludesCoursesAndCoursesStuds(id);
+            List<CourseViewModel> list = student.Courses_Studs.Select(sc => new CourseViewModel
             {
-                Name=sc.Courses.Name,
+                Name = sc.Courses.Name,
                 minDegree = sc.Courses.minDigree,
-                Degree=sc.degree
+                Degree = sc.degree
             })
                                                             .ToList();
             StudDetailsWithCoursesViewModel viewModel = new StudDetailsWithCoursesViewModel();
             viewModel.Name = student.Name;
-            viewModel.Image=student.Image;
+            viewModel.Image = student.Image;
             viewModel.Address = student.Address;
             viewModel.Age = student.Age;
             viewModel.Courses = list;
@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
 
         public IActionResult ShowSessionData()
         {
-            
+
             return View();
         }
 
@@ -70,13 +70,13 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult SaveAdd(StudentWithDepartmentsViewModel std)
         {
-            if (std.Name != null && std.Address!=null)
+            if (std.Name != null && std.Address != null)
             {
                 //if (file == null || file.Length == 0)
                 //    Console.WriteLine("file is null");
 
                 string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
- 
+
 
                 //string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(std.Image.FileName);
                 string filePath = Path.Combine(uploadsFolder, std.Image.FileName);
@@ -96,8 +96,26 @@ namespace WebApplication1.Controllers
                 return RedirectToAction("Index");
             }
             std.Departments = departmentRepository.GetAll();
-            return View("Add",std);
+            return View("Add", std);
 
+        }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Student std = studentRepository.GetByID(id);
+            StudentWithDepartmentsViewModel viewModel = new StudentWithDepartmentsViewModel();
+            viewModel.Id = std.Id;
+            viewModel.Name = std.Name;
+            viewModel.Age = std.Age;
+            viewModel.Address = std.Address;
+            viewModel.DepartmentID = std.DepartmentID;
+            viewModel.Departments = departmentRepository.GetAll();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Edit(StudentWithDepartmentsViewModel std)
+        {
+            return View();
         }
         public IActionResult Delete(int id) 
         {

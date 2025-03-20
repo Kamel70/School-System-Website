@@ -1,54 +1,8 @@
 ﻿@model StudentWithDepartmentsViewModel
 @{
     ViewData["Title"] = "Add";
-    SelectList departments = new SelectList(Model.Departments, "Id", "Name");
+    ViewBag.Edit = false;
 }
 
-<style>
-    .form-container {
-        max-width: 500px;
-        margin: 50px auto;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .form-title {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-</style>
-<div class="container">
-    <div class="form-container">
-        <h2 class="form-title">Add New Student</h2>
-        <form method="post" asp-action="saveadd" asp-controller="student" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" >
-            </div>
-            <div class="mb-3">
-                <label asp-for="Age" class="form-label"></label>
-                <input asp-for="Age" class="form-control" >
-            </div>
-            <div class="mb-3">
-                <label asp-for="Image" class="form-label"></label>
-                <input asp-for="Image" class="form-control">
-                @* <label for="file">Image</label> *@
-                @* <input type="file" name="file" id="file" class="form-control" /> *@
-            </div>
-            <div class="mb-3">
-                <label asp-for="Address" class="form-label"></label>
-                <input asp-for="Address" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label asp-for="DepartmentID" class="form-label"></label>
-                <select class="form-select" asp-for="DepartmentID" asp-items="departments"></select>
-            </div>
-            
-            <div class="mb-3 text-center">
-                <input type="submit" class="btn btn-primary w-50" value="Add">
-            </div>
-
-        </form>
-    </div>
+<partial name="AddOrEditForm"  model="Model"/>
 
