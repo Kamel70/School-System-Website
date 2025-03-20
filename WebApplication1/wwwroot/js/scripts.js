@@ -68,6 +68,11 @@ function openDeleteModalForCourses(Id) {
     document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
     $('#deleteModal').modal('show'); // Show the modal
 }
+function openDeleteModalForInstructors(Id) {
+    var deleteUrl = '/Instructor/Delete/' + Id;
+    document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
+    $('#deleteModal').modal('show'); // Show the modal
+}
 function CloseModal() {
     $('#deleteModal').modal('hide');
 }

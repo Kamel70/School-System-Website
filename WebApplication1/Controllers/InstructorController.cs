@@ -116,6 +116,12 @@ namespace WebApplication1.Controllers
             insRequest.Departments = departmentRepository.GetAll();
             return View("Edit",ins);
         }
+        public IActionResult Delete(int id)
+        {
+            instructorRepository.delete(id);
+            instructorRepository.Save();
+            return RedirectToAction("Index");
+        }
         public IActionResult CheckNameInDepartment(string FName, int DeptID)
         {
             var department = departmentRepository.GetByIDIncludesInstructors(DeptID);

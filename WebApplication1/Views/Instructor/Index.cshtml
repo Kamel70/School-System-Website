@@ -13,9 +13,7 @@
             <th scope="col">First Name</th>
             <th scope="col">Age</th>
             <th scope="col">Salary</th>
-            <th scope="col">Details</th>
-            <th scope="col">Edit</th>
-
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -26,11 +24,31 @@
                 <td>@instructor.FName</td>
                 <td>@instructor.Age</td>
                 <td>@instructor.Salary</td>
-                <td><a href="/instructor/details/@instructor.Id" class="btn btn-primary">Details</a></td>
-                <td><a href="/instructor/Edit/@instructor.Id" class="btn btn-outline-primary">Edit</a></td>
+                <td>
+                    <a href="/instructor/Edit/@instructor.Id" class="btn btn-outline-primary">Edit</a>
+                    <a href="/instructor/details/@instructor.Id" class="btn btn-primary">Details</a>
+                    <a class="btn btn-danger" onclick="openDeleteModalForInstructors(@instructor.Id)">Delete</a>
+                </td>
             </tr>
         }
 
     </tbody>
 </table>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this Instructor?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onclick="CloseModal()">Cancel</button>
+                <a id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 
