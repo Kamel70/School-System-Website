@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿    using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -105,14 +105,15 @@ namespace WebApplication1.Controllers
             CoursesRepository.Save();
             return RedirectToAction("Index");
         }
-        public IActionResult uniqueName(string Name) {
+        public IActionResult uniqueName(string Name) 
+        {
             Courses course = CoursesRepository.GetByName(Name);
             bool isEdit = TempData["IsEdit"] != null && (bool)TempData["IsEdit"];
-            if (course == null && !isEdit) 
+            if (course != null && !isEdit) 
             {
-                return Json(true);
+                return Json(false);
             }
-            return Json(false);
+            return Json(true);
         }
 
         public IActionResult CheckTotalDegree(int TotalDigree, int minDigree) 
