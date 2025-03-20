@@ -110,12 +110,25 @@ namespace WebApplication1.Controllers
             viewModel.Address = std.Address;
             viewModel.DepartmentID = std.DepartmentID;
             viewModel.Departments = departmentRepository.GetAll();
-            return View();
+            return View(viewModel);
         }
         [HttpPost]
         public IActionResult Edit(StudentWithDepartmentsViewModel std)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Student newStud = new Student();
+                newStud.Id = std.Id;
+                newStud.Name = std.Name;
+                newStud.Age = std.Age;
+                newStud.Image = std.Image.FileName;
+                newStud.Address = std.Address;
+                newStud.DepartmentID = std.DepartmentID;
+                studentRepository.Update(newStud);
+                studentRepository.Save();
+                return RedirectToAction("Index");
+            }
+            return View("Edit",std);
         }
         public IActionResult Delete(int id) 
         {
