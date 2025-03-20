@@ -1,0 +1,59 @@
+﻿@model CourseWithInstructorsViewModel
+@{
+    SelectList Instructors = new SelectList(Model.instructors, "Id", "FName");
+}
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <div class="form-container">
+        <h2 class="form-title">@(ViewBag.Edit?"Edit":"Add New") Course</h2>
+        <form method="post" asp-action="@(ViewBag.Edit?"Edit":"saveadd")" asp-controller="course">
+            @if (ViewBag.Edit){
+				<input asp-for="Id" hidden>
+            }
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Topic" class="form-label"></label>
+                <input asp-for="Topic" class="form-control">
+                <span asp-validation-for="Topic" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="minDigree" class="form-label"></label>
+                <input asp-for="minDigree" class="form-control">
+                <span asp-validation-for="minDigree" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TotalDigree" class="form-label"></label>
+                <input asp-for="TotalDigree" class="form-control">
+                <span asp-validation-for="TotalDigree" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="InsID" class="form-label"></label>
+                <select class="form-select" asp-for="InsID" asp-items="Instructors"></select>
+                <span asp-validation-for="InsID" style="color:red"></span>
+            </div>
+
+            <div class="mb-3 text-center">
+                <input type="submit" class="btn btn-primary w-50" value="@(ViewBag.Edit?"Edit":"Add")">
+            </div>
+
+        </form>
+    </div>
+</div>

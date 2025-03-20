@@ -9,7 +9,7 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CourseController : Controller
     {
         ICoursesRepository CoursesRepository;
@@ -40,6 +40,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            TempData["IsEdit"] = false;
+            TempData.Keep("IsEdit");
             CourseWithInstructorsViewModel viewModel = new CourseWithInstructorsViewModel();
             viewModel.instructors = InstructorRepository.GetAll();
             return View(viewModel);
@@ -63,9 +65,50 @@ namespace WebApplication1.Controllers
             return View("Add", course);
 
         }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            TempData["IsEdit"] = true;
+            TempData.Keep("IsEdit");
+            var course = CoursesRepository.GetByID(id);
+            CourseWithInstructorsViewModel courseWithInstructors = new CourseWithInstructorsViewModel();
+            courseWithInstructors.Id = course.Id;
+            courseWithInstructors.Name = course.Name;
+            courseWithInstructors.Topic = course.Topic;
+            courseWithInstructors.minDigree = course.minDigree;
+            courseWithInstructors.TotalDigree = course.TotalDigree;
+            courseWithInstructors.InsID = course.InsID;
+            courseWithInstructors.instructors = InstructorRepository.GetAll();
+            return View(courseWithInstructors);
+        }
+        [HttpPost]
+        public IActionResult Edit(CourseWithInstructorsViewModel courseRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                Courses course = new Courses();
+                course.Id = courseRequest.Id;
+                course.Name = courseRequest.Name;
+                course.Topic = courseRequest.Topic;
+                course.minDigree = courseRequest.minDigree;
+                course.TotalDigree = courseRequest.TotalDigree;
+                course.InsID = courseRequest.InsID;
+                CoursesRepository.Update(course);
+                CoursesRepository.Save();
+                return RedirectToAction("Index");
+            }
+            return View("Edit", courseRequest);
+        }
+        public IActionResult Delete(int id)
+        {
+            CoursesRepository.delete(id);
+            CoursesRepository.Save();
+            return RedirectToAction("Index");
+        }
         public IActionResult uniqueName(string Name) {
             Courses course = CoursesRepository.GetByName(Name);
-            if (course == null) 
+            bool isEdit = TempData["IsEdit"] != null && (bool)TempData["IsEdit"];
+            if (course == null && !isEdit) 
             {
                 return Json(true);
             }

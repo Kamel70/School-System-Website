@@ -63,6 +63,11 @@ function openDeleteModalForDepartments(Id) {
     document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
     $('#deleteModal').modal('show'); // Show the modal
 }
+function openDeleteModalForCourses(Id) {
+    var deleteUrl = '/Course/Delete/' + Id;
+    document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
+    $('#deleteModal').modal('show'); // Show the modal
+}
 function CloseModal() {
     $('#deleteModal').modal('hide');
 }
