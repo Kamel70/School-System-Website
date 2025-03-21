@@ -26,18 +26,19 @@ namespace WebApplication1.Controllers
         {
             if(ModelState.IsValid)
             {
-                ApplicationUser user = await userManager.FindByEmailAsync(account.Email);
+                ApplicationUser user = await userManager.FindByNameAsync(account.Name);
                 if(user != null)
                 {
                     bool result = await userManager.CheckPasswordAsync(user, account.Password);
                     if (result)
                     {
+                        await signInManager.SignInAsync(user, isPersistent: true);
                         return RedirectToAction("Index", "Home");
                     }
                 }
                     ModelState.AddModelError("", "Invalid Email Or Password");
             }
-            return Content("Invalid User");
+            return View("Login",account);
         }
         [HttpGet]
         public IActionResult Register() 

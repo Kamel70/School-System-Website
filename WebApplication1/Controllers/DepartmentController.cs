@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         public IDepartmentRepository departmentRepository;

@@ -7,7 +7,7 @@ namespace WebApplication1.ViewModels
         [Required]
         [MinLength(2,ErrorMessage ="The Name Must be Between 2 to 20 Character")]
         [MaxLength(20,ErrorMessage = "The Name Must be Between 2 to 20 Character")]
-        [Display(Name ="Full Name")]
+        [Display(Name ="User Name")]
         public string FName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]

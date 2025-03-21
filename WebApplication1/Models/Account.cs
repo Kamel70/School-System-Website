@@ -6,9 +6,10 @@ namespace WebApplication1.Models
     public class Account
     {
         [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        [Display(Name="User Name")]
+        public string Name { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

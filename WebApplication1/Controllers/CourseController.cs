@@ -9,7 +9,7 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class CourseController : Controller
     {
         ICoursesRepository CoursesRepository;

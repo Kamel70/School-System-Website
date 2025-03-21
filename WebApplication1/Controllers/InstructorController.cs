@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using WebApplication1.Context;
@@ -9,6 +10,7 @@ using WebApplication1.ViewModels;
 namespace WebApplication1.Controllers
 {
     //[Route("ins")]
+    [Authorize]
     public class InstructorController : Controller
     {
         IInstructorRepository instructorRepository;
