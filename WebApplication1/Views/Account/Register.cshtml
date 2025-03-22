@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Register";
-    SelectList Roles = new SelectList(Model.identityRoles, "Id", "Name");
 }
 
 <style>
@@ -27,7 +26,7 @@
     <div class="form-container">
         <h2 class="form-title">Register</h2>
         <form method="post" asp-action="Register">
-            <div asp-validation-summary="ModelOnly" style="color:red"></div>
+            <div asp-validation-summary="All" style="color:red"></div>
             <div class="mb-3">
                 <label asp-for="FName" class="control-label"></label>
                 <input asp-for="FName" class="form-control" />
@@ -59,10 +58,11 @@
                 <span asp-validation-for="Address" style="color:red"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="RoleID" class="form-label"></label>
-                <select class="form-select" asp-for="RoleID" asp-items="Roles">
+                <label asp-for="SelectedRole" class="form-label"></label>
+                <select asp-for="SelectedRole" asp-items="Model.Roles" class="form-control">
+                    <option value="">-- Select Role --</option>
                 </select>
-                <span asp-validation-for="RoleID" style="color:red"></span>
+                <span asp-validation-for="SelectedRole" style="color:red"></span>
             </div>
             <div class="mb-3 text-center">
                 <input type="submit" value="Register" class="btn btn-primary" />

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication1.ViewModels
 {
@@ -15,7 +16,7 @@ namespace WebApplication1.ViewModels
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",ErrorMessage = "Password must be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character")]
+        //[RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",ErrorMessage = "Password must be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character")]
         public string Password { get; set; } 
         [Required]
         [Compare("Password",ErrorMessage ="Confirm Password Must Match Password")]
@@ -27,9 +28,10 @@ namespace WebApplication1.ViewModels
         public string PhoneNumber { get; set; }
         [Required]
         public string Address { get; set; }
-        public string RoleID { get; set; }
         [Required]
-        public List<IdentityRole> identityRoles { get; set; }= new List<IdentityRole>();
+        public string SelectedRole { get; set; }
+        
+        public List<SelectListItem>? Roles { get; set; }
 
 
 

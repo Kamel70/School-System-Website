@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using WebApplication1.Models;
 using WebApplication1.ViewModels;
@@ -11,6 +13,7 @@ namespace WebApplication1.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        
         public AccountController(UserManager<ApplicationUser> _userManager,SignInManager<ApplicationUser> _signInManager,RoleManager<IdentityRole> _roleManager) 
         {
             userManager = _userManager;
@@ -43,12 +46,14 @@ namespace WebApplication1.Controllers
             return View("Login",account);
         }
         [HttpGet]
-        public IActionResult Register() 
+        public async Task<IActionResult> Register() 
         {
-            var roles = roleManager.Roles.ToList();
-            RegisterViewModel register = new RegisterViewModel();
-            register.identityRoles = roles;
-            return View(register);
+            var roles = await roleManager.Roles
+                                         .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+                                         .ToListAsync();
+
+            var model = new RegisterViewModel { Roles = roles };
+            return View(model);
         }
 
         [HttpPost]
@@ -61,11 +66,26 @@ namespace WebApplication1.Controllers
                 applicationUser.Email = register.Email;
                 applicationUser.PhoneNumber = register.PhoneNumber;
                 applicationUser.Address = register.Address;
-                IdentityResult identityResult=await userManager.CreateAsync(applicationUser,register.Password);
+                applicationUser.PasswordHash = register.Password;
+                IdentityResult identityResult = await userManager.CreateAsync(applicationUser);
+                //IdentityResult identityResult=await userManager.CreateAsync(applicationUser,register.Password);
+
                 if (identityResult.Succeeded)
                 {
-                    await signInManager.SignInAsync(applicationUser, isPersistent: false);
-                    return RedirectToAction("Index", "Student");
+                    IdentityResult ir= await userManager.AddToRoleAsync(applicationUser, register.SelectedRole);
+                    if (ir.Succeeded)
+                    { 
+                        await signInManager.SignInAsync(applicationUser, isPersistent: false);
+                        return RedirectToAction("Index", "Student");
+                    }
+                    foreach (var item in ir.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    register.Roles = await roleManager.Roles
+                                         .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+                                         .ToListAsync();
+                    return View("Register", register);
                 }
                 foreach (var item in identityResult.Errors)
                 {
@@ -73,6 +93,9 @@ namespace WebApplication1.Controllers
                 }
                 
             }
+            register.Roles = await roleManager.Roles
+                                         .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+                                         .ToListAsync();
             return View("Register",register);
         }
 
