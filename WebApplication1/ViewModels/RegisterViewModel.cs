@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplication1.ViewModels
 {
@@ -26,6 +27,9 @@ namespace WebApplication1.ViewModels
         public string PhoneNumber { get; set; }
         [Required]
         public string Address { get; set; }
+        public string RoleID { get; set; }
+        [Required]
+        public List<IdentityRole> identityRoles { get; set; }= new List<IdentityRole>();
 
 
 

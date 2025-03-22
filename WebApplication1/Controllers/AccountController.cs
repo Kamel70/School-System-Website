@@ -10,10 +10,12 @@ namespace WebApplication1.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public AccountController(UserManager<ApplicationUser> _userManager,SignInManager<ApplicationUser> _signInManager) 
+        private readonly RoleManager<IdentityRole> roleManager;
+        public AccountController(UserManager<ApplicationUser> _userManager,SignInManager<ApplicationUser> _signInManager,RoleManager<IdentityRole> _roleManager) 
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            roleManager = _roleManager;
         }
         [HttpGet]
         public IActionResult Login()
@@ -43,7 +45,10 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult Register() 
         {
-            return View();
+            var roles = roleManager.Roles.ToList();
+            RegisterViewModel register = new RegisterViewModel();
+            register.identityRoles = roles;
+            return View(register);
         }
 
         [HttpPost]
