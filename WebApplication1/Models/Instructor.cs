@@ -16,5 +16,7 @@ namespace WebApplication1.Models
         [ForeignKey("Department")]
         public int DeptID { get; set; }
         public ICollection<Courses> Courses { get; set; } = new HashSet<Courses>();
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }

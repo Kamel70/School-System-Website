@@ -10,7 +10,7 @@ using WebApplication1.ViewModels;
 namespace WebApplication1.Controllers
 {
     //[Route("ins")]
-    [Authorize]
+    //[Authorize]
     public class InstructorController : Controller
     {
         IInstructorRepository instructorRepository;

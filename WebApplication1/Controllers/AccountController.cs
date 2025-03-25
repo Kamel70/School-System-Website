@@ -49,6 +49,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> Register() 
         {
             var roles = await roleManager.Roles
+                                         .Where(r => r.Name == "Admin" || r.Name=="HR")
                                          .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
                                          .ToListAsync();
 

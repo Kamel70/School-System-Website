@@ -6,7 +6,7 @@ using WebApplication1.Repository;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class DepartmentController : Controller
     {
         public IDepartmentRepository departmentRepository;
