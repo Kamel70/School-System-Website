@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -16,11 +17,17 @@ namespace WebApplication1.Controllers
         IInstructorRepository instructorRepository;
         ICoursesRepository courseRepository;
         IDepartmentRepository departmentRepository;
-        public InstructorController(IInstructorRepository instructorRepository,ICoursesRepository coursesRepository,IDepartmentRepository departmentRepository)
+        UserManager<ApplicationUser> userManager;   
+        public InstructorController(
+            IInstructorRepository instructorRepository
+            ,ICoursesRepository coursesRepository
+            ,IDepartmentRepository departmentRepository
+            ,UserManager<ApplicationUser> _userManager)
         {
             this.instructorRepository = instructorRepository;
             this.courseRepository = coursesRepository;
             this.departmentRepository = departmentRepository;
+            userManager = _userManager;
         }
         //[HttpGet("getall")]
         public IActionResult Index()
@@ -51,24 +58,38 @@ namespace WebApplication1.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult SaveAdd(InstructorWithDepartmentsAndCourses ins)
+        public async Task<IActionResult> SaveAdd(InstructorWithDepartmentsAndCourses ins)
         {
             if (ModelState.IsValid) 
             {
-                Instructor newIns=new Instructor();
-                Courses newCourses=new Courses();
-                newIns.FName = ins.FName;
-                newIns.LName = ins.LName;
-                newIns.Salary = ins.Salary;
-                newIns.Age = ins.Age;
-                newIns.Image=ins.Image;
-                newIns.HiringDate = ins.HiringDate;
-                newIns.DeptID = ins.DeptID;
-                newIns.Courses= courseRepository.getsByID(ins.CourseId);
-                instructorRepository.Add(newIns);
-                instructorRepository.Save();
-                return RedirectToAction("Index");
-
+                ApplicationUser user = new ApplicationUser();
+                user.Email = ins.Email;
+                user.PasswordHash = ins.Password;
+                user.UserName = $"{ins.FName}-{ins.LName}";
+                user.PhoneNumber = ins.phoneNumber;
+                user.Address = ins.Address;
+                IdentityResult id = await userManager.CreateAsync(user);
+                if(id.Succeeded)
+                {
+                    IdentityResult idRole=await userManager.AddToRoleAsync(user, "Instructor");
+                    if (idRole.Succeeded)
+                    {
+                        Instructor newIns = new Instructor();
+                        Courses newCourses = new Courses();
+                        newIns.FName = ins.FName;
+                        newIns.LName = ins.LName;
+                        newIns.Salary = ins.Salary;
+                        newIns.Age = ins.Age;
+                        newIns.Image = ins.Image;
+                        newIns.HiringDate = ins.HiringDate;
+                        newIns.DeptID = ins.DeptID;
+                        newIns.Courses = courseRepository.getsByID(ins.CourseId);
+                        instructorRepository.Add(newIns);
+                        instructorRepository.Save();
+                        return RedirectToAction("Index");
+                    }
+                    
+                }
             }
             ins.courses = courseRepository.GetAll();
             ins.Departments = departmentRepository.GetAll();

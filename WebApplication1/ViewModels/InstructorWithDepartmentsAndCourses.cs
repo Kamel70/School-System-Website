@@ -8,7 +8,17 @@ namespace WebApplication1.ViewModels
     public class InstructorWithDepartmentsAndCourses
     {
         public int Id { get; set; }
-        
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
+        [Required]
+        [Compare("Password", ErrorMessage = "The Password and Check Password must be the same")]
+        public string CheckPassword { get; set; }
+        public string phoneNumber { get; set; }
+        public string Address { get; set; }
+
         [Display(Name="First Name")]
         [Required]
         [MinLength(3, ErrorMessage = "The First Name must be Greater Than 2 Character")]
