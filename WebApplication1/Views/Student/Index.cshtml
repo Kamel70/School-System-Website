@@ -1,18 +1,23 @@
 ﻿@{
     // Layout = "_Layout";
 }
-<label for="departmentDropdown">Filter by Department:</label>
-<select id="departmentDropdown" class="form-control">
-    <option value="0">All Departments</option>
-    @foreach (Department dept in ViewBag.Departments)
-    {
-        <option value="@dept.Id">@dept.Name</option>
-    }
-</select>
+@if (User.IsInRole("HR"))
+{
+    <label for="departmentDropdown">Filter by Department:</label>
+    <select id="departmentDropdown" class="form-control">
+        <option value="0">All Departments</option>
+        @foreach (Department dept in ViewBag.Departments)
+        {
+            <option value="@dept.Id">@dept.Name</option>
+        }
+    </select>
+    
+}
 
 <div id="studentList">
-    <partial name="AllStudents" model="Model"/>
+    <partial name="AllStudents" model="Model" />
 </div>
+
 
 <script>
     $(document).ready(function ($) {

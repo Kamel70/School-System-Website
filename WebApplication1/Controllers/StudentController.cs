@@ -10,7 +10,7 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    //[Authorize(Roles ="Admin,HR,Student")]
     public class StudentController : Controller
     {
         IDepartmentRepository departmentRepository;
@@ -25,7 +25,7 @@ namespace WebApplication1.Controllers
             this.studentRepository = studentRepository;
             this.userManager = userManager;
         }
-        [Authorize(Roles = "HR")]
+        [Authorize(Roles = "HR,Admin")]
         public IActionResult Index()
         {
             ViewBag.Departments = departmentRepository.GetAll();

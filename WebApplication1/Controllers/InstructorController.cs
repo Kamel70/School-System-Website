@@ -30,7 +30,7 @@ namespace WebApplication1.Controllers
             userManager = _userManager;
         }
         //[HttpGet("getall")]
-        [Authorize(Roles = "HR")]
+        [Authorize(Roles = "HR,Admin")]
         public IActionResult Index()
         {
             var instructor = instructorRepository.GetAll();

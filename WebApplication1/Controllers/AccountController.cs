@@ -35,7 +35,8 @@ namespace WebApplication1.Controllers
                 ApplicationUser user = await userManager.FindByNameAsync(account.Name);
                 if(user != null)
                 {
-                    bool result = await userManager.CheckPasswordAsync(user, account.Password);
+                    //bool result = await userManager.CheckPasswordAsync(user, account.Password);
+                    bool result = user.PasswordHash==account.Password;
                     if (result)
                     {
                         await signInManager.SignInAsync(user, isPersistent: true);
@@ -47,6 +48,7 @@ namespace WebApplication1.Controllers
             return View("Login",account);
         }
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Register() 
         {
             var roles = await roleManager.Roles
@@ -59,7 +61,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
             if (ModelState.IsValid) 
@@ -105,7 +107,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> SignOut()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Register");
+            return RedirectToAction("Login");
         }
     }
 }

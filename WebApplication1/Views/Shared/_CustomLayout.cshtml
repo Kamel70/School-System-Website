@@ -29,11 +29,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="course" >Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="student">Students</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="instructor">Instructors</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="SignOut">Sign Out</a></li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="course" asp-action="Index">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="student" asp-action="Index">Students</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="instructor" asp-action="Index">Instructors</a></li>
+                    }
+                    @if (User.IsInRole("HR"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="student" asp-action="Index">Students</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="instructor" asp-action="Index">Instructors</a></li>
+                    }
+                    @if (User.IsInRole("Instructor"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="course" asp-action="Index">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="instructor" asp-action="Index">Instructors</a></li>
+                    }
+                    @if (User.IsInRole("Student"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="course" asp-action="Index">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="Index">Student</a></li>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="SignOut">Sign Out</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login">Login</a></li>
+                    }
                 </ul>
             </div>
         </div>

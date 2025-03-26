@@ -2,38 +2,44 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="m-5">
-    <span>You Want to Add New Instructor? </span>
-    <a href="/instructor/Add" class="btn btn-outline-primary">Add</a>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Age</th>
-            <th scope="col">Salary</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Instructor instructor in Model)
-        {
+@if (User.IsInRole("Admin"))
+{
+    <div class="m-5">
+        <span>You Want to Add New Instructor? </span>
+        <a href="/instructor/Add" class="btn btn-outline-primary">Add</a>
+    </div>
+}
+@if (User.IsInRole("HR"))
+{
+    <table class="table">
+        <thead>
             <tr>
-                <th scope="row">@instructor.Id</th>
-                <td>@instructor.FName</td>
-                <td>@instructor.Age</td>
-                <td>@instructor.Salary</td>
-                <td>
-                    <a href="/instructor/Edit/@instructor.Id" class="btn btn-outline-primary">Edit</a>
-                    <a href="/instructor/details/@instructor.Id" class="btn btn-primary">Details</a>
-                    <a class="btn btn-danger" onclick="openDeleteModalForInstructors(@instructor.Id)">Delete</a>
-                </td>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">Salary</th>
+                <th scope="col"></th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (Instructor instructor in Model)
+            {
+                <tr>
+                    <th scope="row">@instructor.Id</th>
+                    <td>@instructor.FName</td>
+                    <td>@instructor.Age</td>
+                    <td>@instructor.Salary</td>
+                    <td>
+                        <a href="/instructor/Edit/@instructor.Id" class="btn btn-outline-primary">Edit</a>
+                        <a href="/instructor/details/@instructor.Id" class="btn btn-primary">Details</a>
+                        <a class="btn btn-danger" onclick="openDeleteModalForInstructors(@instructor.Id)">Delete</a>
+                    </td>
+                </tr>
+            }
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
