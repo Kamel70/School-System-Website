@@ -42,8 +42,8 @@
                     }
                     @if (User.IsInRole("Instructor"))
                     {
-                        <li class="nav-item"><a class="nav-link" asp-controller="course" asp-action="Index">Courses</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="instructor" asp-action="Index">Instructors</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="instructor" asp-action="ShowCourses">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="instructor" asp-action="GetDetailsOfInst">details</a></li>
                     }
                     @if (User.IsInRole("Student"))
                     {

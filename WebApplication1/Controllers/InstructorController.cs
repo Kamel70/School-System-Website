@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -187,6 +188,31 @@ namespace WebApplication1.Controllers
                 return Json(false);
             }
             return Json(true);
+        }
+        [HttpGet]
+        [Authorize(Roles ="Instructor")]
+        public IActionResult GetDetailsOfInst()
+        {
+            Claim claim=User.Claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier);
+            string id=claim.Value;
+            var instructor = instructorRepository.GetByUserIDIncludesCourses(id);
+            InstructorDetailsViewModel viewModel = new InstructorDetailsViewModel();
+            viewModel.FullName = $"{instructor.FName} {instructor.LName}";
+            viewModel.Image = instructor.Image;
+            viewModel.HiringDate = instructor.HiringDate.ToString();
+            List<Courses> courses = instructor.Courses.ToList();
+            viewModel.Courses = courses;
+            return View("details",viewModel);
+        }
+        [HttpGet]
+        [Authorize(Roles = "Instructor")]
+        public IActionResult ShowCourses()
+        {
+            Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            string id = claim.Value;
+            var instructor = instructorRepository.GetByUserIDIncludesCourses(id);
+            List<Courses> courses = instructor.Courses.ToList();
+            return View(courses);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace WebApplication1.Repository
         public Instructor GetByID(int id);
         public void Save();
         public Instructor GetByIDIncludesCourses(int id);
+        public Instructor GetByUserIDIncludesCourses(string id);
     }
 }

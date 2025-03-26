@@ -41,5 +41,11 @@ namespace WebApplication1.Repository
             return context.Instructors.Include(i => i.Courses)
                                       .SingleOrDefault(i => i.Id == id);
         }
+
+        public Instructor GetByUserIDIncludesCourses(string id)
+        {
+            return context.Instructors.Include(i => i.Courses)
+                                     .SingleOrDefault(i => i.UserId == id);
+        }
     }
 }

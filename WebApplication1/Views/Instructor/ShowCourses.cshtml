@@ -1,0 +1,54 @@
+﻿@model List<Courses>
+@{
+    ViewData["Title"] = "ShowCourses";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Courses</h2>
+    <div class="row">
+        @foreach (Courses course in Model)
+        {
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 rounded-lg mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary fw-bold">@course.Name</h5>
+                        <p class="card-text">
+                            <strong>Topic:</strong> @course.Topic <br>
+                            <strong>Min Degree:</strong> @course.minDigree <br>
+                            <strong>Total Degree:</strong> @course.TotalDigree
+                        </p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary btn-sm">View Details</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Bootstrap Styling -->
+<style>
+    .card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    h2 {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+</style>
+
