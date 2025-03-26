@@ -82,6 +82,7 @@ namespace WebApplication1.Controllers
                         newIns.Age = ins.Age;
                         newIns.Image = ins.Image;
                         newIns.HiringDate = ins.HiringDate;
+                        newIns.UserId=user.Id;
                         newIns.DeptID = ins.DeptID;
                         newIns.Courses = courseRepository.getsByID(ins.CourseId);
                         instructorRepository.Add(newIns);
@@ -103,25 +104,40 @@ namespace WebApplication1.Controllers
             TempData["IsEdit"] = true;
             TempData.Keep("IsEdit");
             var ins=instructorRepository.GetByID(id);
-            InstructorWithDepartmentsAndCourses viewModel = new InstructorWithDepartmentsAndCourses();
-            viewModel.Id = id;
-            viewModel.FName = ins.FName;
-            viewModel.LName = ins.LName;
-            viewModel.Salary = ins.Salary;
-            viewModel.Age = ins.Age;
-            viewModel.Image = ins.Image;
-            viewModel.HiringDate = ins.HiringDate;
-            viewModel.DeptID = ins.DeptID;
-            viewModel.courses=courseRepository.GetAll();
-            viewModel.Departments = departmentRepository.GetAll();
-            return View(viewModel);
+            if (ins != null) 
+            {
+                InstructorWithDepartmentsAndCourses viewModel = new InstructorWithDepartmentsAndCourses();
+                viewModel.Id = id;
+                viewModel.FName = ins.FName;
+                viewModel.LName = ins.LName;
+                viewModel.Salary = ins.Salary;
+                viewModel.Age = ins.Age;
+                viewModel.Image = ins.Image;
+                viewModel.HiringDate = ins.HiringDate;
+                viewModel.DeptID = ins.DeptID;
+                ApplicationUser user=userManager.Users.FirstOrDefault(u=>u.Id==ins.UserId);
+                viewModel.Email = user.Email;
+                viewModel.Password = user.PasswordHash;
+                viewModel.Address = user.Address;
+                viewModel.phoneNumber = user.PhoneNumber;   
+                viewModel.courses = courseRepository.GetAll();
+                viewModel.Departments = departmentRepository.GetAll();
+                return View(viewModel);
+            }
+            return NotFound(); 
         }
         [HttpPost]
-        public IActionResult SaveEdit(InstructorWithDepartmentsAndCourses insRequest)
+        public async Task<IActionResult> SaveEdit(InstructorWithDepartmentsAndCourses insRequest)
         {
             var ins=instructorRepository.GetByID(insRequest.Id);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == ins.UserId);
             if (ModelState.IsValid)
             {
+                user.Email = insRequest.Email;
+                user.PhoneNumber = insRequest.phoneNumber;
+                user.PasswordHash = insRequest.Password;
+                user.Address = insRequest.Address;
+                await userManager.UpdateAsync(user);
                 ins.FName = insRequest.FName;
                 ins.LName = insRequest.LName;
                 ins.Salary = insRequest.Salary;

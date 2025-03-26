@@ -48,7 +48,6 @@ namespace WebApplication1.ViewModels
         public int DeptID { get; set; }
         public List<Department> Departments { get; set; } = new List<Department>();
         [Display(Name ="Course")]
-        [Required]
         public int CourseId { get; set; }
         public List<Courses> courses { get; set; } = new List<Courses>();
     }

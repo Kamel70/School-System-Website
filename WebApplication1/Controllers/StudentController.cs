@@ -109,6 +109,7 @@ namespace WebApplication1.Controllers
                         newStud.Age = std.Age;
                         newStud.Image = std.Image.FileName;
                         newStud.Address = std.Address;
+                        newStud.UserId = user.Id;
                         newStud.DepartmentID = std.DepartmentID;
                         studentRepository.Add(newStud);
                         studentRepository.Save();
@@ -124,20 +125,32 @@ namespace WebApplication1.Controllers
         public IActionResult Edit(int id)
         {
             Student std = studentRepository.GetByID(id);
+            ApplicationUser user= userManager.Users.FirstOrDefault(u => u.Id == std.UserId);
             StudentWithDepartmentsViewModel viewModel = new StudentWithDepartmentsViewModel();
             viewModel.Id = std.Id;
             viewModel.Name = std.Name;
             viewModel.Age = std.Age;
             viewModel.Address = std.Address;
+            viewModel.Email = user.Email;
+            viewModel.PhoneNumber = user.PhoneNumber;
+            viewModel.Password = user.PasswordHash;
             viewModel.DepartmentID = std.DepartmentID;
             viewModel.Departments = departmentRepository.GetAll();
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Edit(StudentWithDepartmentsViewModel std)
+        public async Task<IActionResult> Edit(StudentWithDepartmentsViewModel std)
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = new ApplicationUser();
+                user.Id = studentRepository.GetByID(std.Id).UserId;
+                user.Email = std.Email;
+                user.PasswordHash = std.Password;
+                user.UserName = std.Name;
+                user.PhoneNumber = std.PhoneNumber;
+                user.Address = std.Address;
+                await userManager.UpdateAsync(user);
                 Student newStud = new Student();
                 newStud.Id = std.Id;
                 newStud.Name = std.Name;
@@ -151,10 +164,13 @@ namespace WebApplication1.Controllers
             }
             return View("Edit",std);
         }
-        public IActionResult Delete(int id) 
+        public async Task<IActionResult> Delete(int id) 
         {
             studentRepository.delete(id);
             studentRepository.Save();
+            ApplicationUser user = userManager.Users.FirstOrDefault(u => u.Id == studentRepository.GetByID(id).UserId);
+            await userManager.DeleteAsync(user);
+            await userManager.RemoveFromRoleAsync(user, "Student");
 
             return RedirectToAction("Index");
         }
