@@ -6,7 +6,7 @@ using WebApplication1.Repository;
 
 namespace WebApplication1.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class DepartmentController : Controller
     {
         public IDepartmentRepository departmentRepository;
@@ -61,7 +61,7 @@ namespace WebApplication1.Controllers
             var department = departmentRepository.GetByIDIncludesInstructors(id);
             return View(department);
         }
-
+        
         public IActionResult Delete(int id)
         {
             departmentRepository.delete(id);

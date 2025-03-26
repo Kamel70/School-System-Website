@@ -10,7 +10,7 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class StudentController : Controller
     {
         IDepartmentRepository departmentRepository;
@@ -25,6 +25,7 @@ namespace WebApplication1.Controllers
             this.studentRepository = studentRepository;
             this.userManager = userManager;
         }
+        [Authorize(Roles = "HR")]
         public IActionResult Index()
         {
             ViewBag.Departments = departmentRepository.GetAll();
@@ -42,7 +43,7 @@ namespace WebApplication1.Controllers
 
             return PartialView("AllStudents", students);
         }
-
+        [Authorize(Roles = "HR")]
         public IActionResult Details(int id)
         {
             var student = studentRepository.GetByIdIncludesCoursesAndCoursesStuds(id);
@@ -69,6 +70,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             StudentWithDepartmentsViewModel viewModel = new StudentWithDepartmentsViewModel();
@@ -76,6 +78,7 @@ namespace WebApplication1.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SaveAdd(StudentWithDepartmentsViewModel std)
         {
             if (std.Name != null && std.Address != null)
@@ -122,6 +125,7 @@ namespace WebApplication1.Controllers
 
         }
         [HttpGet]
+        [Authorize(Roles = "HR")]
         public IActionResult Edit(int id)
         {
             Student std = studentRepository.GetByID(id);
@@ -139,6 +143,7 @@ namespace WebApplication1.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize(Roles = "HR")]
         public async Task<IActionResult> Edit(StudentWithDepartmentsViewModel std)
         {
             if (ModelState.IsValid)
@@ -164,6 +169,7 @@ namespace WebApplication1.Controllers
             }
             return View("Edit",std);
         }
+        [Authorize(Roles = "HR")]
         public async Task<IActionResult> Delete(int id) 
         {
             studentRepository.delete(id);

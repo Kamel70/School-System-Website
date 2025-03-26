@@ -11,7 +11,7 @@ using WebApplication1.ViewModels;
 namespace WebApplication1.Controllers
 {
     //[Route("ins")]
-    //[Authorize]
+    [Authorize]
     public class InstructorController : Controller
     {
         IInstructorRepository instructorRepository;
@@ -30,12 +30,14 @@ namespace WebApplication1.Controllers
             userManager = _userManager;
         }
         //[HttpGet("getall")]
+        [Authorize(Roles = "HR")]
         public IActionResult Index()
         {
             var instructor = instructorRepository.GetAll();
             return View(instructor);
         }
         //[HttpGet("{id}")]
+        [Authorize(Roles = "HR")]
         public IActionResult Details(int id)
         {
             var instructor = instructorRepository.GetByIDIncludesCourses(id);
@@ -48,6 +50,7 @@ namespace WebApplication1.Controllers
             return View(viewModel);
         }
         //[HttpGet("add")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             TempData["IsEdit"] = false; 
@@ -58,6 +61,7 @@ namespace WebApplication1.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SaveAdd(InstructorWithDepartmentsAndCourses ins)
         {
             if (ModelState.IsValid) 
@@ -99,6 +103,7 @@ namespace WebApplication1.Controllers
         }
 
         //[HttpGet("edit/{id}")]
+        [Authorize(Roles = "HR")]
         public IActionResult Edit(int id)
         {
             TempData["IsEdit"] = true;
@@ -127,6 +132,7 @@ namespace WebApplication1.Controllers
             return NotFound(); 
         }
         [HttpPost]
+        [Authorize(Roles = "HR")]
         public async Task<IActionResult> SaveEdit(InstructorWithDepartmentsAndCourses insRequest)
         {
             var ins=instructorRepository.GetByID(insRequest.Id);
@@ -155,6 +161,7 @@ namespace WebApplication1.Controllers
             insRequest.Departments = departmentRepository.GetAll();
             return View("Edit",ins);
         }
+        [Authorize(Roles = "HR")]
         public IActionResult Delete(int id)
         {
             instructorRepository.delete(id);

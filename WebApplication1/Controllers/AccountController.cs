@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
             if (ModelState.IsValid) 
@@ -99,7 +101,7 @@ namespace WebApplication1.Controllers
                                          .ToListAsync();
             return View("Register",register);
         }
-
+        [Authorize]
         public async Task<IActionResult> SignOut()
         {
             await signInManager.SignOutAsync();
