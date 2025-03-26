@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using WebApplication1.Context;
 using WebApplication1.Models;
 using WebApplication1.Repository;
@@ -13,11 +15,15 @@ namespace WebApplication1.Controllers
     {
         IDepartmentRepository departmentRepository;
         IStudentRepository studentRepository;
+        UserManager<ApplicationUser> userManager;
 
-        public StudentController(IDepartmentRepository departmentRepository, IStudentRepository studentRepository)
+        public StudentController(IDepartmentRepository departmentRepository
+            , IStudentRepository studentRepository
+            , UserManager<ApplicationUser> userManager)
         {
             this.departmentRepository = departmentRepository;
             this.studentRepository = studentRepository;
+            this.userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -70,7 +76,7 @@ namespace WebApplication1.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult SaveAdd(StudentWithDepartmentsViewModel std)
+        public async Task<IActionResult> SaveAdd(StudentWithDepartmentsViewModel std)
         {
             if (std.Name != null && std.Address != null)
             {
@@ -86,16 +92,29 @@ namespace WebApplication1.Controllers
                 {
                     std.Image.CopyTo(fileStream);
                 }
-
-                Student newStud = new Student();
-                newStud.Name = std.Name;
-                newStud.Age = std.Age;
-                newStud.Image = std.Image.FileName;
-                newStud.Address = std.Address;
-                newStud.DepartmentID = std.DepartmentID;
-                studentRepository.Add(newStud);
-                studentRepository.Save();
-                return RedirectToAction("Index");
+                ApplicationUser user = new ApplicationUser();
+                user.Email = std.Email;
+                user.PasswordHash = std.Password;
+                user.UserName = std.Name;
+                user.PhoneNumber = std.PhoneNumber;
+                user.Address = std.Address;
+                IdentityResult id = await userManager.CreateAsync(user);
+                if (id.Succeeded)
+                {
+                    IdentityResult idRole = await userManager.AddToRoleAsync(user, "Student");
+                    if (idRole.Succeeded)
+                    {
+                        Student newStud = new Student();
+                        newStud.Name = std.Name;
+                        newStud.Age = std.Age;
+                        newStud.Image = std.Image.FileName;
+                        newStud.Address = std.Address;
+                        newStud.DepartmentID = std.DepartmentID;
+                        studentRepository.Add(newStud);
+                        studentRepository.Save();
+                        return RedirectToAction("Index");
+                    }
+                }
             }
             std.Departments = departmentRepository.GetAll();
             return View("Add", std);

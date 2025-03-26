@@ -30,6 +30,21 @@
                 <input asp-for="Name" class="form-control">
             </div>
             <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input class="form-control" asp-for="Email">
+                <span asp-validation-for="Email" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input class="form-control" asp-for="Password">
+                <span asp-validation-for="Password" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input class="form-control" asp-for="ConfirmPassword">
+                <span asp-validation-for="ConfirmPassword" style="color:red"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="Age" class="form-label"></label>
                 <input asp-for="Age" class="form-control">
             </div>
@@ -38,6 +53,11 @@
                 <input asp-for="Image" class="form-control">
                 @* <label for="file">Image</label> *@
                 @* <input type="file" name="file" id="file" class="form-control" /> *@
+            </div>
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input class="form-control" asp-for="PhoneNumber">
+                <span asp-validation-for="PhoneNumber" style="color:red"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Address" class="form-label"></label>
