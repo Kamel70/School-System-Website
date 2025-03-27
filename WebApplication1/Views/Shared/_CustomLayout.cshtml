@@ -48,7 +48,7 @@
                     @if (User.IsInRole("Student"))
                     {
                         <li class="nav-item"><a class="nav-link" asp-controller="course" asp-action="Index">Courses</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="Index">Student</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="GetDetailsOfStd">Details</a></li>
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -63,26 +63,28 @@
         </div>
     </nav>
     <!-- Masthead-->
-    @if (ViewBag.ShowMainPageSection != null && ViewBag.ShowMainPageSection == true){
+    @if (ViewBag.ShowMainPageSection != null && ViewBag.ShowMainPageSection == true)
+    {
         <header class="masthead">
-        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-            <div class="d-flex justify-content-center">
-                <div class="text-center">
-                    <h1 class="mx-auto my-0 text-uppercase">Grayscale</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
-                    <a class="btn btn-primary" href="#about">Get Started</a>
+            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <h1 class="mx-auto my-0 text-uppercase">Grayscale</h1>
+                        <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
+                        <a class="btn btn-primary" href="#about">Get Started</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
     }
-    
+
     <!-- About-->
     <div class="container vh-100 d-flex align-items-center justify-content-center" id="about">
         <main role="main" class="pb-3 w-100">
             @RenderBody()
         </main>
     </div>
+    @if (ViewBag.ShowMainPageSection != null && ViewBag.ShowMainPageSection == true){
     <!-- Projects-->
     <section class="projects-section bg-light" id="projects">
         <div class="container px-4 px-lg-5">
@@ -212,6 +214,7 @@
             </div>
         </div>
     </section>
+    }
     <!-- Footer-->
     <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy; Your Website 2023</div></footer>
     <!-- Bootstrap core JS-->

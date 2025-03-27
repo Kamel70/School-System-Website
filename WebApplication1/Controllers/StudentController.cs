@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -180,6 +181,38 @@ namespace WebApplication1.Controllers
 
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        [Authorize(Roles ="Student")]
+        public IActionResult GetDetailsOfStd()
+        {
+            Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            string id = claim.Value;
+            var student = studentRepository.GetByUserIdIncludesCoursesAndCoursesStuds(id);
+            List<CourseViewModel> list = student.Courses_Studs.Select(sc => new CourseViewModel
+            {
+                Name = sc.Courses.Name,
+                minDegree = sc.Courses.minDigree,
+                Degree = sc.degree
+            })
+                                                            .ToList();
+            StudDetailsWithCoursesViewModel viewModel = new StudDetailsWithCoursesViewModel();
+            viewModel.Name = student.Name;
+            viewModel.Image = student.Image;
+            viewModel.Address = student.Address;
+            viewModel.Age = student.Age;
+            viewModel.Courses = list;
+            return View("Details", viewModel);
+        }
+        //[HttpGet]
+        //[Authorize(Roles = "Student")]
+        //public IActionResult ShowCourses()
+        //{
+        //    Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        //    string id = claim.Value;
+        //    var student = studentRepository.GetByUserIdIncludesCoursesAndCoursesStuds(id);
+        //    List<Courses> courses = student.cou;
+        //    return View(courses);
+        //}
 
     }
 }

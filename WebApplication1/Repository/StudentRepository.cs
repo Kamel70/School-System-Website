@@ -47,5 +47,12 @@ namespace WebApplication1.Repository
                                    .ThenInclude(cs => cs.Courses)
                                    .FirstOrDefault(s => s.Id == id);
         }
+
+        public Student GetByUserIdIncludesCoursesAndCoursesStuds(string userId)
+        {
+            return context.Students.Include(s => s.Courses_Studs)
+                                   .ThenInclude(cs => cs.Courses)
+                                   .FirstOrDefault(s => s.UserId == userId);
+        }
     }
 }

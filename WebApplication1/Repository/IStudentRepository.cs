@@ -13,5 +13,6 @@ namespace WebApplication1.Repository
         public List<Student> getStudentsByDepartmentID(int id);
 
         public Student GetByIdIncludesCoursesAndCoursesStuds(int id);
+        public Student GetByUserIdIncludesCoursesAndCoursesStuds(string userId);
     }
 }
