@@ -16,15 +16,22 @@ namespace WebApplication1.Controllers
     {
         IDepartmentRepository departmentRepository;
         IStudentRepository studentRepository;
+        ICoursesRepository coursesRepository;
+        ICourses_StudsRepository courses_StudsRepository;
         UserManager<ApplicationUser> userManager;
 
         public StudentController(IDepartmentRepository departmentRepository
             , IStudentRepository studentRepository
-            , UserManager<ApplicationUser> userManager)
+            , UserManager<ApplicationUser> userManager
+            , ICoursesRepository coursesRepository,
+              ICourses_StudsRepository courses_StudsRepository
+            )
         {
             this.departmentRepository = departmentRepository;
             this.studentRepository = studentRepository;
             this.userManager = userManager;
+            this.coursesRepository = coursesRepository;
+            this.courses_StudsRepository = courses_StudsRepository;
         }
         [Authorize(Roles = "HR,Admin")]
         public IActionResult Index()
@@ -218,6 +225,28 @@ namespace WebApplication1.Controllers
             })
                                                                .ToList() ;
             return View(list);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Student")]
+        public IActionResult AddCourse()
+        {
+            List<Courses> courses =coursesRepository.GetAll();
+            return View(courses);
+        }
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public IActionResult AddCourse(int cID)
+        {
+            Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            string id = claim.Value;
+            var student = studentRepository.GetByUserIdIncludesCoursesAndCoursesStuds(id);
+            Courses_Studs courses_Studs=new Courses_Studs();
+            courses_Studs.StudentId = student.Id;
+            courses_Studs.CoursesId = cID;
+            courses_StudsRepository.Add(courses_Studs);
+            courses_StudsRepository.Save();
+            return RedirectToAction("ShowCourses");
         }
 
     }

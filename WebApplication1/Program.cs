@@ -22,12 +22,19 @@ namespace WebApplication1
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IInstructorRepository, InstructorRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<ICourses_StudsRepository, Courses_StudsRepository>();
             builder.Services.AddDbContext<SchoolContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("school"));
             });
             builder.Services.AddIdentity <ApplicationUser,IdentityRole>()
                 .AddEntityFrameworkStores<SchoolContext>();
+            builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    });
             var app = builder.Build();
             using (var scope = app.Services.CreateScope())
             {

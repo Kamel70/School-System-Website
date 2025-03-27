@@ -5,13 +5,7 @@
         <a asp-action="Add" class="btn btn-outline-primary">Add</a>
     </div>
 }
-@if (User.IsInRole("Student"))
-{
-    <div class="m-5">
-        <span>Add Course </span>
-        <a asp-action="AddCourse" class="btn btn-outline-primary">Add</a>
-    </div>
-}
+
 @if (User.IsInRole("HR") ||User.IsInRole("Admin"))
 {
     <table class="table">

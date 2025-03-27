@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = "ShowCourses";
 }
-
+    <div class="m-5">
+        <span>Add Course </span>
+        <a asp-action="AddCourse" class="btn btn-outline-primary">Add</a>
+    </div>
 <h2 class="card-subtitle mb-2">Courses</h2>
 <ul class="list-unstyled m-3">
     @foreach (CourseViewModel course in Model)
