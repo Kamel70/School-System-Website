@@ -9,16 +9,21 @@
         <a href="/instructor/Add" class="btn btn-outline-primary">Add</a>
     </div>
 }
-@if (User.IsInRole("HR"))
+@if (User.IsInRole("HR") || User.IsInRole("Admin"))
 {
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">First Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Full Name</th>
                 <th scope="col">Age</th>
-                <th scope="col">Salary</th>
-                <th scope="col"></th>
+                @if (User.IsInRole("HR"))
+                {
+                    <th scope="col">Salary</th>
+                    <th scope="col"></th>
+                }
+
             </tr>
         </thead>
         <tbody>
@@ -26,14 +31,19 @@
             {
                 <tr>
                     <th scope="row">@instructor.Id</th>
-                    <td>@instructor.FName</td>
+                    <td><img src="/Images/@instructor.Image" style="width:70px" /></td>
+                    <td>@instructor.FName @instructor.LName</td>
                     <td>@instructor.Age</td>
-                    <td>@instructor.Salary</td>
-                    <td>
-                        <a href="/instructor/Edit/@instructor.Id" class="btn btn-outline-primary">Edit</a>
-                        <a href="/instructor/details/@instructor.Id" class="btn btn-primary">Details</a>
-                        <a class="btn btn-danger" onclick="openDeleteModalForInstructors(@instructor.Id)">Delete</a>
-                    </td>
+                    @if (User.IsInRole("HR"))
+                    {
+                        <td>@instructor.Salary</td>
+                        <td>
+                            <a href="/instructor/Edit/@instructor.Id" class="btn btn-outline-primary">Edit</a>
+                            <a href="/instructor/details/@instructor.Id" class="btn btn-primary">Details</a>
+                            <a class="btn btn-danger" onclick="openDeleteModalForInstructors(@instructor.Id)">Delete</a>
+                        </td>
+                    }
+                    
                 </tr>
             }
 

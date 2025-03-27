@@ -5,17 +5,21 @@
         <a asp-action="Add" class="btn btn-outline-primary">Add</a>
     </div>
 }
-@if (User.IsInRole("HR"))
+@if (User.IsInRole("HR") ||User.IsInRole("Admin"))
 {
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
                 <th scope="col">Image</th>
+                <th scope="col">Name</th>
                 <th scope="col">Age</th>
                 <th scope="col">Address</th>
-                <th scope="col">Actions</th>
+                @if (User.IsInRole("HR"))
+                {
+                    <th scope="col"></th>
+                }
+
 
             </tr>
         </thead>
@@ -24,16 +28,19 @@
             {
                 <tr>
                     <th scope="row">@student.Id</th>
-                    <td>@student.Name</td>
-                    @* <td>@student.Image</td> *@
                     <td><img src="/Images/@student.Image" style="width:70px" /></td>
+                    <td>@student.Name</td>
                     <td>@student.Age</td>
                     <td>@student.Address</td>
-                    <td>
-                        <a class="btn btn-outline-primary" href="/student/Edit/@student.Id">Edit</a>
-                        <a class="btn btn-primary" href="/student/details/@student.Id">Details</a>
-                        <a class="btn btn-danger" onclick="openDeleteModalForStudents(@student.Id)">Delete</a>
-                    </td>
+                    @if (User.IsInRole("HR"))
+                    {
+                        <td>
+                            <a class="btn btn-outline-primary" href="/student/Edit/@student.Id">Edit</a>
+                            <a class="btn btn-primary" href="/student/details/@student.Id">Details</a>
+                            <a class="btn btn-danger" onclick="openDeleteModalForStudents(@student.Id)">Delete</a>
+                        </td>
+                    }
+                    
                 </tr>
             }
         </tbody>
