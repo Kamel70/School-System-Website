@@ -1,0 +1,21 @@
+﻿@model List<CourseViewModel>
+@{
+    ViewData["Title"] = "ShowCourses";
+}
+
+<h2 class="card-subtitle mb-2">Courses</h2>
+<ul class="list-unstyled m-3">
+    @foreach (CourseViewModel course in Model)
+    {
+        string backgroundColor = course.Degree >= course.minDegree ? "#198754" : "#dc3545";
+        <li class="mb-3">
+            <button class="btn w-100 text-white py-3" style="background-color: @(course.Degree==null?"#808080":backgroundColor);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="h5 mb-0">@course.Name</span>
+                    <span class="badge bg-light text-dark">@course.Degree</span>
+                </div>
+            </button>
+        </li>
+    }
+</ul>
+

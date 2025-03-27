@@ -11,6 +11,6 @@ namespace WebApplication1.Models
         public Courses Courses { get; set; }
         [ForeignKey("Courses")]
         public int CoursesId { get;set; }
-        public int degree { get; set; }
+        public int? degree { get; set; }
     }
 }

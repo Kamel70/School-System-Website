@@ -47,7 +47,7 @@
                     }
                     @if (User.IsInRole("Student"))
                     {
-                        <li class="nav-item"><a class="nav-link" asp-controller="course" asp-action="Index">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="ShowCourses">Courses</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="GetDetailsOfStd">Details</a></li>
                     }
                     @if (User.Identity.IsAuthenticated)

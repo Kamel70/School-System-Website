@@ -203,16 +203,22 @@ namespace WebApplication1.Controllers
             viewModel.Courses = list;
             return View("Details", viewModel);
         }
-        //[HttpGet]
-        //[Authorize(Roles = "Student")]
-        //public IActionResult ShowCourses()
-        //{
-        //    Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        //    string id = claim.Value;
-        //    var student = studentRepository.GetByUserIdIncludesCoursesAndCoursesStuds(id);
-        //    List<Courses> courses = student.cou;
-        //    return View(courses);
-        //}
+        [HttpGet]
+        [Authorize(Roles = "Student")]
+        public IActionResult ShowCourses()
+        {
+            Claim claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            string id = claim.Value;
+            var student = studentRepository.GetByUserIdIncludesCoursesAndCoursesStuds(id);
+            List<CourseViewModel> list = student.Courses_Studs.Select(sc=> new CourseViewModel
+            {
+                Name = sc.Courses.Name,
+                minDegree = sc.Courses.minDigree,
+                Degree = sc.degree
+            })
+                                                               .ToList() ;
+            return View(list);
+        }
 
     }
 }
